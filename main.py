@@ -1,7 +1,13 @@
 import discord
 import os
+import dotenv
 
-client = discord.Client()
+intents = discord.Intents.default()
+intents.members = True
+intents.message_content = True
+intents.messages = True
+
+client = discord.Client(intents=intents)
 
 
 @client.event
@@ -11,11 +17,9 @@ async def on_ready():
 
 @client.event
 async def on_message(message):
-    if message.author == client.user:
-        return
-
     if message.content.startswith('$hello'):
         await message.channel.send('Hello!')
 
-
-client.run(os.getenv('TOKEN'))
+dotenv.load_dotenv()
+token = os.environ["TOKEN"]
+client.run(token)
